@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connect from "./database/connect.js";
+import kiteApisRoute from "./routes/kiteAPIs.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 
 //routes
 app.use('/api/auth/',authRoute);
+app.use('/api/kite/', kiteApisRoute);
 
 
 app.listen(PORT, ()=>{

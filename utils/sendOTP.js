@@ -1,8 +1,6 @@
 import nodemailer from "nodemailer";
 import twilio from "twilio";
-import fastTwoSMS from "fast-two-sms";
 import dotenv from "dotenv";
-import SendOtp from "sendotp";
 
 dotenv.config();
 
