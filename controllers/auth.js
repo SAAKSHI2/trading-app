@@ -38,7 +38,7 @@ export const login = async(req,res) => {
             }).status(200).json({Message: "user login successfull", userID : user._id, accessToken: token, expiryDate: expirationTimestamp});
               
         } else{
-            return res.status(400).json("wrong password");
+            return res.status(400).json({ success: false, message: "wrong password"});
         }
 
       } catch (error) {
