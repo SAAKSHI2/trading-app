@@ -9,11 +9,14 @@ export const authenticate = (req, res, next) => {
     //     return res.status(401).json({ message: "Authentication failed. No token provided." });
     // }
 
-    const bearerHeader = req.headers['Authorization'];
+    const bearerHeader = req.headers['authorization'];
+    // console.log(req.headers);
+    console.log("bearerHeader : "+ bearerHeader);
 
     if (typeof bearerHeader !== 'undefined') {
         // Extract the token from the bearer header
         const bearerToken = bearerHeader.split(' ')[1];
+        console.log("beaerToken : "+ bearerToken);
 
         // Verify the JWT token
         jwt.verify(bearerToken, process.env.SECRET_KEY, (err, decoded) => {
@@ -24,5 +27,8 @@ export const authenticate = (req, res, next) => {
             req.user = decoded;
             next();
         });
+  } else{
+    res.status(401).json({message : "Not authorized"});
   }
+
 }
