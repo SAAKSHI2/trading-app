@@ -21,11 +21,21 @@ export const login = async(req,res) => {
       
         if(checkPassword === true){
             const token = jwt.sign({user_id:user._id},process.env.SECRET_KEY);
+
+            // Get the current date
+            const currentDate = new Date();
+
+            // Add 7 days to the current date
+            const expirationDate = new Date(currentDate.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days in milliseconds
+
+            // Get the timestamp representing the expiration date
+            const expirationTimestamp = expirationDate.getTime();
+
             res.cookie("accessToken",token,{
                 httpOnly:true,
                 sameSite: process.env.SAME_SITE,
                 secure: process.env.SECURE,
-            }).status(200).json({Message: "user login successfull", userID : user._id});
+            }).status(200).json({Message: "user login successfull", userID : user._id, accessToken: token, expiryDate: expirationTimestamp});
               
         } else{
             return res.status(400).json("wrong password");
