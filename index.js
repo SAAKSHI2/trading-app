@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connect from "./database/connect.js";
 import kiteApisRoute from "./routes/kiteAPIs.js";
+import tradeStockApisRoute from "./routes/tradeStocks.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 //routes
 app.use('/api/auth/',authRoute);
 app.use('/api/kite/', kiteApisRoute);
+app.use('/api/stocks/', tradeStockApisRoute)
 
 
 app.listen(PORT, ()=>{

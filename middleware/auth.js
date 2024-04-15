@@ -11,12 +11,12 @@ export const authenticate = (req, res, next) => {
 
     const bearerHeader = req.headers['authorization'];
     // console.log(req.headers);
-    console.log("bearerHeader : "+ bearerHeader);
+    // console.log("bearerHeader : "+ bearerHeader);
 
     if (typeof bearerHeader !== 'undefined') {
         // Extract the token from the bearer header
         const bearerToken = bearerHeader.split(' ')[1];
-        console.log("beaerToken : "+ bearerToken);
+        // console.log("beaerToken : "+ bearerToken);
 
         // Verify the JWT token
         jwt.verify(bearerToken, process.env.SECRET_KEY, (err, decoded) => {
