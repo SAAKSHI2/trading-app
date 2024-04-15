@@ -8,9 +8,6 @@ router.post('/sell', authenticate, sellStock)
 router.post('/buy', authenticate, buyStock)
 router.get('/currentStocks/:phoneNumber', authenticate, currentStocksInfo)
 router.get('/transactionLogs/:phoneNumber',authenticate, getTransactionLogs)
-// router.get('/transactionLogs/:phoneNumber',authenticate, getTransactionLogs)
-
-
 
 
 export default router;
