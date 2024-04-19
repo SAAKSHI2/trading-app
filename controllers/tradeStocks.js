@@ -2,10 +2,10 @@ import Users from "../models/Users.js";
 
 export const sellStock = async(req, res) => {
     try {
-        const { phoneNumber, symbol, quantity, price } = req.body;
+        const { user_id, symbol, quantity, price } = req.body;
     
         // Find the user by email
-        const user = await Users.findOne({ phoneNumber });
+        const user = await Users.findOne({ _id: user_id });
     
         if (!user) {
           return res.status(404).json({ message: 'User not found' });
@@ -14,7 +14,7 @@ export const sellStock = async(req, res) => {
         // Check if the user owns the specified stock and has enough quantity to sell
         const stockIndex = user.current_stocks.findIndex(stock => stock.symbol === symbol);
         if (stockIndex === -1 || user.current_stocks[stockIndex].quantity < quantity) {
-          return res.status(400).json({ message: 'User does not own enough of this stock' });
+          return res.status(400).json({ message: 'User does not own enough of this stock' , success: false});
         }
     
         // Calculate the total price of the sold stocks
@@ -51,28 +51,28 @@ export const sellStock = async(req, res) => {
         // Save the updated user data
         await user.save();
     
-        res.status(200).json({ message: 'Stock sold successfully' , currentStockState : currentStockState});
+        res.status(200).json({ message: 'Stock sold successfully' , success: true});
       } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error', success: false });
       }    
 }
 
 
 
 export const buyStock = async (req, res) => {
-    const { phoneNumber, symbol, quantity, price } = req.body;
+    const { user_id, symbol, quantity, price } = req.body;
   
     try {
       // Find user by email
-      const user = await Users.findOne({ phoneNumber });
+      const user = await Users.findOne({ _id: user_id });
   
       // Calculate total transaction amount
       const total = quantity * price;
   
       // Check if user has sufficient balance
       if (user.currency < total) {
-        return res.status(400).json({ message: 'Insufficient balance' });
+        return res.status(400).json({ message: 'Insufficient balance', success: false });
       }
   
       // Deduct total amount from user's wallet
@@ -117,28 +117,28 @@ export const buyStock = async (req, res) => {
       // Save updated user data
       await user.save();
   
-      res.status(200).json({ message: 'Stock purchased successfully' , currentStockState: currentStockState});
+      res.status(200).json({ message: 'Stock purchased successfully' , success: true});
     } catch (error) {
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ message: 'Internal server error', success: false});
     }
 }
 
 export const currentStocksInfo = async(req,res) =>{
-    const { phoneNumber } = req.params;
+    const { user_id } = req.params;
     try {
         // Find the user by phone number
-        const user = await Users.findOne({ phoneNumber });
+        const user = await Users.findOne({ _id: user_id });
     
         if (!user) {
-          return res.status(404).json({ message: "User not found" });
+          return res.status(404).json({ message: "User not found" , success: false});
         }
     
         // Extract and return the current stock information for the user
         const currentStocks = user.current_stocks;
-        res.status(200).json({ currentStocks });
+        res.status(200).json({ currentStocks: currentStocks, success: true });
       } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error", success: false });
       }
 
 }

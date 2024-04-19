@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/sell', authenticate, sellStock)
 router.post('/buy', authenticate, buyStock)
-router.get('/currentStocks/:phoneNumber', authenticate, currentStocksInfo)
+router.get('/currentStocks/:user_id', authenticate, currentStocksInfo)
 router.get('/transactionLogs/:phoneNumber',authenticate, getTransactionLogs)
 
 

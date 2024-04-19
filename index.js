@@ -37,6 +37,7 @@ app.use('/api/kite/', kiteApisRoute);
 app.use('/api/stocks/', tradeStockApisRoute)
 app.use('/api/user',userInfoApisRoute)
 
+
 app.listen(PORT, ()=>{
     connect();
     console.log("server running at port : ", PORT);

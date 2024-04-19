@@ -29,13 +29,20 @@ export const login = async(req,res) => {
             const expirationDate = new Date(currentDate.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days in milliseconds
 
             // Get the timestamp representing the expiration date
-            const expirationTimestamp = expirationDate.getTime();
+            // const expirationTimestamp = expirationDate.getTime();
+           //settinh expirationTImestamp to 0 for now
+            const expirationTImestamp = 0;
+
+            user.accessToken = token;
+            // user.expiryDate = expirationTImestamp;
+
+            await user.save();
 
             res.cookie("accessToken",token,{
                 httpOnly:true,
                 sameSite: process.env.SAME_SITE,
                 secure: process.env.SECURE,
-            }).status(200).json({Message: "user login successfull", userID : user._id, accessToken: token, expiryDate: expirationTimestamp});
+            }).status(200).json({Message: "user login successfull", userID : user._id, accessToken: token, expiryDate: expirationTImestamp, success: true});
               
         } else{
             return res.status(400).json({ success: false, message: "wrong password"});

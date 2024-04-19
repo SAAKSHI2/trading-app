@@ -10,6 +10,9 @@ const userSchema = new Schema({
   lastName: { type: String},
   phoneNumber: {type: Number, required: true},
   password: {type: String},
+  profile_pic: {type:String},
+  accessToken: {type:String},
+  expiryDate: {type:Date},
   current_stocks: [
     {
       symbol: {
@@ -61,7 +64,20 @@ const userSchema = new Schema({
         required: true
       }
     }
-  ]
+  ],
+  settings: {
+    theme:{
+        type:String,
+        enum: ['Dark', 'Default','Light'],
+        default:'Default'
+    },
+    order_notification:{type:Boolean, default: false},
+    sticky_order_window: {type: Boolean, default: false},
+    accessibility_mode: {type:Boolean, default: false},
+    fullScreen: {type:Boolean, default: false},
+    sticky_pins: {type:Boolean, default: false},
+
+  }
  
 });
 
