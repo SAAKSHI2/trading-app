@@ -124,7 +124,7 @@ export const buyStock = async (req, res) => {
 }
 
 export const currentStocksInfo = async(req,res) =>{
-    const { user_id } = req.params;
+    const { user_id, type } = req.params;
     try {
         // Find the user by phone number
         const user = await Users.findOne({ _id: user_id });
@@ -135,7 +135,7 @@ export const currentStocksInfo = async(req,res) =>{
     
         // Extract and return the current stock information for the user
         const currentStocks = user.current_stocks;
-        res.status(200).json({ currentStocks: currentStocks, success: true });
+        res.status(200).json({ currentStocksInfo: {current_stocks:currentStocks, user_id: user._id, currency: user.currency}, success: true });
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error", success: false });
