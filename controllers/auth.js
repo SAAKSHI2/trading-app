@@ -78,7 +78,7 @@ export const register = async(req,res)=>{
         const newUser = new Users({ email, otp , phoneNumber, firstName, lastName});
         await newUser.save();
 
-        res.status(200).json({ success: true, message: 'oTP send successfully.' });
+        res.status(200).json({ success: true, message: 'oTP send successfully.', user_id: newUser._id});
 
       } catch (error) {
         console.error(error.message);
@@ -90,14 +90,14 @@ export const register = async(req,res)=>{
 
 
 export const verifyOTP = async(req, res) => {
-    const {otp, phoneNumber} = req.body;
+    const {otp, user_id} = req.body;
     try{
-        const user = await Users.findOne({ phoneNumber });
+        const user = await Users.findOne({ _id:user_id });
          if (!user) {
-            return res.status(400).json({ success: false, message: 'user not registered' });
+            return res.status(400).json({ success: false, message: 'user not registered'});
          } 
          if(otp === user.otp){
-             return res.status(200).json({ success: true, message: 'user verified successfully' });
+             return res.status(200).json({ success: true, message: 'user verified successfully',user_id: user._id });
          } else{
              return res.status(400).json({ success: false, message: 'invalid OTP' });
          }
@@ -111,7 +111,7 @@ export const verifyOTP = async(req, res) => {
 
 
 export const setPassword  = async(req,res) => {
-    const {password , phoneNumber} = req.body;
+    const {password , user_id} = req.body;
     try{
      //Hash password
      const hash = bcrypt.hash(password, 10 ,async(err,hash)=>{
@@ -119,14 +119,14 @@ export const setPassword  = async(req,res) => {
             return res.status(400).json(err.message);
         }
         //store hashed password in database
-         const user = await Users.findOne({ phoneNumber });
+         const user = await Users.findOne({ _id: user_id });
          if (!user) {
-         return res.status(404).json({ success: false, message: 'user not found' });
+         return res.status(404).json({ success: false, message: 'user not found'});
          }
 
          user.password = hash;
          await user.save();
-         return res.status(200).json("password is set successfully"); 
+         return res.status(200).json({message: "password is set successfully", success: true, user_id: user_id }); 
     })
     } catch(error){
         res.status(400).json(error.message);
@@ -141,16 +141,23 @@ export const resendOTP = async(req, res) => {
     // Generate OTP
     const otp = generateOTP();
     try{
+        let user;
+
+        if(email){
         //send OTP to user email and SMS
         await sendOTPByEmail(email, otp);
+        user = await Users.findOne({ email });  
+        }
+        if(phoneNumber){
         await sendOTPBySMS(phoneNumber, otp);
+        user = await Users.findOne({ phoneNumber });  
+        }
 
        // Store OTP in a secure way (e.g., database) for verification later
-       const user = await Users.findOne({ phoneNumber });  
        user.otp = otp;    
 
        await user.save();
-       res.status(200).json({ success: true, message: 'oTP send successfully.' });
+       res.status(200).json({ success: true, message: 'oTP send successfully.', user_id: user._id });
 
       } catch (error) {
         console.error(error.message);
