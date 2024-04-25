@@ -27,13 +27,15 @@ export async function generateKiteSession(requestToken) {
         const response = await kc.generateSession(requestToken, process.env.API_SECRET);
         console.log("session generated successfully : ", response);
         KiteTokens.findOne({})
-        .then((doc) => {
+        .then(async(doc) => {
             if (doc && doc.accessToken !== undefined) {
             // If the accessToken field exists, update it
-            return KiteTokens.updateOne({}, { accessToken: response.access_token });
+            console.log("update accessToken field in mongoDB")
+            return await KiteTokens.updateOne({}, { accessToken: response.access_token });
             } else {
             // If the accessToken field doesn't exist, create it
-            return KiteTokens.updateOne({}, { $set: { accessToken: response.access_token } }, { upsert: true });
+            console.log("add accessToken field in mongoDB")
+            return await KiteTokens.updateOne({}, { $set: { accessToken: response.access_token } }, { upsert: true });
             }
         })
         .then((result) => {
@@ -43,7 +45,7 @@ export async function generateKiteSession(requestToken) {
             console.error('Error:', error);
         });
 
-        kc.setAccessToken(accessToken);
+        kc.setAccessToken(response.access_token);
 
     } catch (err) {
         console.error(err);
