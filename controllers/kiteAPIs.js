@@ -13,7 +13,7 @@ export const login = (req,res) => {
 export const callback = async(req,res) => {
     const requestToken = req.query.request_token;
     console.log("request token generated : " + requestToken )
-    await generateKiteSession();
+    await generateKiteSession(requestToken);
     //    const accessToken = "aizrZdq8qpUdJg5VEunB3EzYmLgBs9EF";
     // kc.setAccessToken(accessToken)
 }
