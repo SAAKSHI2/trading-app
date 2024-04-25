@@ -22,9 +22,9 @@ export const checkAndSetAccessToken = async() => {
         });   
 }
 
-export async function generateKiteSession() {
+export async function generateKiteSession(requestToken) {
     try {
-        const response = await kc.generateSession(kc.access_token, process.env.API_SECRET);
+        const response = await kc.generateSession(requestToken, process.env.API_SECRET);
         console.log("session generated successfully : ", response);
         KiteTokens.findOne({})
         .then((doc) => {
