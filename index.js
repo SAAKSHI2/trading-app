@@ -8,6 +8,7 @@ import connect from "./database/connect.js";
 import kiteApisRoute from "./routes/kiteAPIs.js";
 import tradeStockApisRoute from "./routes/tradeStocks.js";
 import userInfoApisRoute from "./routes/userInfo.js";
+import basketApisRoute from "./routes/basketAPIs.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/auth/',authRoute);
 app.use('/api/kite/', kiteApisRoute);
 app.use('/api/stocks/', tradeStockApisRoute)
 app.use('/api/user',userInfoApisRoute)
+app.use('/api/baskets',basketApisRoute)
 
 
 app.listen(PORT, ()=>{

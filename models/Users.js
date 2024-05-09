@@ -65,6 +65,19 @@ const userSchema = new Schema({
       }
     }
   ],
+  baskets: [
+    {
+      name: { type: String, required: true },
+      stocks: [
+        {
+          symbol: { type: String, required: true },
+          quantity: { type: Number, default: 0, required: true },
+          price: { type: Number, required: true },
+          completed: { type: Boolean, default: false } 
+        }
+      ]
+    }
+  ],
   settings: {
     theme:{
         type:String,
