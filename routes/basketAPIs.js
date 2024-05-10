@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate } from "../middleware/auth.js";
-import { addStockToBasket, createBasket, deleteBasket, deleteBasketStock, editBasketName, editStockInBasket, getAllBaskets, getBaksetInfo } from "../controllers/basketAPIs.js";
+import { addStockToBasket, createBasket, deleteBasket, deleteBasketStock, editBasketName, editStockInBasket, executeBasket, getAllBaskets, getBaksetInfo, setCompleted } from "../controllers/basketAPIs.js";
 
 const router = express.Router();
 
@@ -12,6 +12,8 @@ router.put('/:basket_id/users/:user_id/stocks/:stock_id',authenticate, editStock
 router.put('/:basket_id/users/:user_id/',authenticate, editBasketName)
 router.delete('/:basket_id/users/:user_id',authenticate, deleteBasket)
 router.delete('/:basket_id/users/:user_id/stocks/:stock_id',authenticate, deleteBasketStock)
+router.post('/:basket_id/users/:user_id/execute',authenticate,executeBasket)
+router.get('/:basket_id/users/:user_id/setCompletedToTrue',authenticate,setCompleted)
 
 
 export default router;

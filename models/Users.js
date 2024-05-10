@@ -73,7 +73,8 @@ const userSchema = new Schema({
           symbol: { type: String, required: true },
           quantity: { type: Number, default: 0, required: true },
           price: { type: Number, required: true },
-          completed: { type: Boolean, default: false } 
+          completed: { type: Boolean, default: false },
+          transactionType: { type: String, enum: ['BUY', 'SELL'], required: true } 
         }
       ]
     }
