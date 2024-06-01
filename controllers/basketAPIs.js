@@ -1,7 +1,6 @@
 import Users from "../models/Users.js";
 import axios from 'axios';
 import dotenv from "dotenv";
-import e from "express";
 dotenv.config();
 
 

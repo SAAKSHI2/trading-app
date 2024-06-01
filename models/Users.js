@@ -40,23 +40,26 @@ const userSchema = new Schema({
     {
       type: {
         type: String,
-        enum: ['BUY_STOCK', 'SELL_STOCK'],
+        enum: ['BUY_STOCK', 'SELL_STOCK','BUY_OPTION', 'SELL_OPTION'],
         required: true
       },
       stockInfo: {
           symbol: {
-            type: String,
-            required: true
-          },
+            type: String
+            },
           quantity: {
-            type: Number,
-            default: 0,
-            required: true
+            type: Number
           },
           price: {
-            type: Number,
-            required: true
+            type: Number
           }
+        },
+        optionInfo: {
+          symbol: { type: String},
+          type: { type: String, enum: ['CALL', 'PUT']},
+          strikePrice: { type: Number},
+          premium: { type: Number },
+          quantity: { type: Number } // Include quantity for options
         },
       date: {
         type: Date,
@@ -77,6 +80,19 @@ const userSchema = new Schema({
           transactionType: { type: String, enum: ['BUY', 'SELL'], required: true } 
         }
       ]
+    }
+  ],
+  options: [
+    {
+      symbol: { type: String, required: true },
+      type: {
+        type: String,
+        enum: ['CALL', 'PUT'],
+        required: true
+      },
+      strikePrice: { type: Number, required: true },
+      quantity: { type: Number, default: 0, required: true },
+      premium: { type: Number, required: true }  // Premium field for options
     }
   ],
   settings: {
