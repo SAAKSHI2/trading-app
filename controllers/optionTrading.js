@@ -1,3 +1,4 @@
+import axios from "axios";
 import Users from "../models/Users.js";
 
 // Buy option
@@ -107,5 +108,25 @@ export const sellOption = async (req, res) => {
         res.status(500).json({ message: "Internal server error", success: false });
       }
 
+}
+
+export const getOptionInfo = async(req,res) => {
+    const {symbol} = req.params;
+    const headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36",
+        "authority": "www.nseindia.com",
+        "scheme": "https"
+      };
+      
+      
+    try{
+        const response = await axios.get("https://www.nseindia.com/api/option-chain-indices?symbol=" + symbol, {
+            headers
+        });
+        res.status(200).json({ optionsInfo: response.data, success: true });
+    } catch(error){
+        res.status(500).json({ message: "Internal server error", error: error.message, success: false });
+
+    }
 }
 
