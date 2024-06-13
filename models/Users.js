@@ -95,6 +95,18 @@ const userSchema = new Schema({
       premium: { type: Number, required: true }  // Premium field for options
     }
   ],
+  stoploss: [
+    {
+       price: { type: Number},
+       symbol: {type : String},
+       action: { 
+        type: String,
+        enum: ['BUY', 'SELL'],
+      },
+       quantity:{type: Number},
+       isActive: {type: Boolean, default:true}
+    }
+  ],
   settings: {
     theme:{
         type:String,

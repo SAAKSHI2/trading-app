@@ -10,6 +10,7 @@ import tradeStockApisRoute from "./routes/tradeStocks.js";
 import userInfoApisRoute from "./routes/userInfo.js";
 import basketApisRoute from "./routes/basketAPIs.js";
 import optionStocksAPIsRoute from "./routes/optionStocksAPIs.js";
+import stopLossAPIsRoute from "./routes/stopLossAPIs.js";
 
 dotenv.config();
 
@@ -40,6 +41,8 @@ app.use('/api/stocks/', tradeStockApisRoute)
 app.use('/api/optionStocks/', optionStocksAPIsRoute)
 app.use('/api/user',userInfoApisRoute)
 app.use('/api/baskets',basketApisRoute)
+app.use('/api/stopLoss',stopLossAPIsRoute)
+
 
 
 app.listen(PORT, ()=>{
