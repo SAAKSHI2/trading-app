@@ -1,5 +1,6 @@
 import axios from "axios";
 import Users from "../models/Users.js";
+import http from "http";
 
 // Buy option
 export const buyOption = async (req, res) => {
@@ -120,9 +121,12 @@ export const getOptionInfo = async(req,res) => {
       
       
     try{
+
         const response = await axios.get("https://www.nseindia.com/api/option-chain-indices?symbol=" + symbol, {
-            headers
+            headers,
+            httpAgent: new http.Agent({ keepAlive: true }),
         });
+        
         res.status(200).json({ optionsInfo: response.data, success: true });
     } catch(error){
         res.status(500).json({ message: "Internal server error", error: error.message, success: false });
